@@ -19,6 +19,7 @@ const el = {
   acertos: $('m-acertos'), acertosSub: $('m-acertos-sub'),
   tempo: $('m-tempo'), tempoSub: $('m-tempo-sub'),
   hudNucleos: $('hud-nucleos'), hudTotal: $('hud-total'),
+  linkLeitor: $('link-leitor'), abrirLeitor: $('abrir-leitor'),
   tabelaCorpo: $('tabela-corpo'), tabelaNota: $('tabela-nota'),
 };
 
@@ -80,11 +81,23 @@ function desenhar() {
   marcarItemAtual();
 }
 
-function salvarHash() {
+function hashAtual() {
   const p = new URLSearchParams();
   if (consulta) p.set('q', consulta);
   p.set('p', foco.toString());
-  try { history.replaceState(null, '', '#' + p.toString()); } catch { /* sem histórico: tudo bem */ }
+  return '#' + p.toString();
+}
+
+// o leitor em tela cheia abre no mesmo lugar e com a mesma busca
+function atualizarLinks() {
+  const href = 'leitor.html' + hashAtual();
+  el.linkLeitor.href = href;
+  el.abrirLeitor.href = href;
+}
+
+function salvarHash() {
+  try { history.replaceState(null, '', hashAtual()); } catch { /* sem histórico: tudo bem */ }
+  atualizarLinks();
 }
 
 function irPara(pos, escolher = false) {
@@ -348,6 +361,7 @@ function comecar() {
   // A coluna das posições só ganha largura depois do primeiro desenho e tira
   // espaço do texto: medir de novo agora, senão a linha passa do cartão.
   if (medirTela()) desenhar();
+  atualizarLinks();
   atualizarPrevia();
   criarBuscador();
 }

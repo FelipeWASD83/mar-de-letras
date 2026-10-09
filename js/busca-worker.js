@@ -35,6 +35,8 @@ self.onmessage = (e) => {
       letras: msg.tamanho,
       contagem: r.contagem,
       posicoes: r.posicoes,
+      primeira: r.primeira,
+      ultima: r.ultima,
       ms: performance.now() - t0,
     });
   }

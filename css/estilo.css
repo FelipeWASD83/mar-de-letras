@@ -29,6 +29,8 @@ button, input { font: inherit; color: inherit; }
 .rotulo-escuro { color: var(--escuro-2); }
 
 .hud { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.link-hud { color: var(--marca); text-decoration: none; border-bottom: 1px solid transparent; }
+.link-hud:hover { border-bottom-color: var(--marca); }
 .hud-baixo { margin-top: clamp(28px, 4vw, 64px); padding-top: 16px; border-top: 1px solid var(--tinta-linha); }
 
 /* ---------- topo ---------- */
@@ -135,7 +137,7 @@ button, input { font: inherit; color: inherit; }
   font-size: 0.9rem;
   color: var(--escuro);
 }
-.leitura .botao.pequeno, .botao.pequeno { padding: 0.4em 1em; font-size: 0.78rem; background: var(--escuro); color: var(--papel); }
+.leitura .botao.pequeno, .botao.pequeno { padding: 0.4em 1em; font-size: 0.78rem; background: var(--escuro); color: var(--papel); text-decoration: none; display: inline-block; }
 .leitura .botao.pequeno:hover { background: #2b3a52; }
 .aviso-ir { min-height: 1.4em; margin-top: 6px; font-family: var(--mono); font-size: 0.8rem; color: #8a3a12; }
 

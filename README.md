@@ -24,6 +24,16 @@ chance de ela existir e quanto tempo leva achar a primeira. Em resumo: até 8 ou
 letras é rápido; com 12 já são só umas 10 ocorrências no texto todo; de 13 para
 cima pode nem existir.
 
+## Leitor em tela cheia
+
+O link **Ler em tela cheia** (ou `leitor.html`) abre o texto como um leitor de
+documento: a roda do mouse rola linha a linha (Shift acelera, Alt voa), a régua
+da direita salta para qualquer ponto dos 10^18, e dá para ir a uma posição
+(`50 %`, `100T`, `2,5G`, `1e15` ou o número exato). A busca de lá é de **próximo**
+(Enter) e **anterior** (Shift+Enter) a partir de onde você está. Tem zoom (A−, A+,
+Ctrl+roda), "Grupos de 10", "Copiar tela" e "Sortear". A posição e a busca vão na
+URL, então dá para voltar ao mesmo lugar depois.
+
 ## Para quem for mexer
 
 Ver o `CLAUDE.md`. Testes: `node --test "testes/*.test.js"`. Porta 4343.

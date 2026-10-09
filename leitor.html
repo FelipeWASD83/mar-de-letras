@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Leitor do Mar de letras</title>
+  <meta name="description" content="Lê o texto de 1 quintilhão de letras em tela cheia: rola pela roda do mouse, régua, ir para qualquer posição, zoom e busca de próximo e anterior.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/leitor.css">
+</head>
+<body class="leitor-pagina">
+
+  <header class="barra barra-topo" id="topo">
+    <h1 class="so-leitor">Leitor do Mar de letras</h1>
+    <a class="marca" href="index.html" title="Voltar para a busca com contagem" aria-label="Mar de letras: voltar para a busca">MAR<span>/</span>DE<span>/</span>LETRAS</a>
+
+    <form class="busca" id="form-busca" role="search" autocomplete="off">
+      <input class="campo" id="busca" type="text" name="busca" maxlength="40" placeholder="Buscar: AMOR" aria-label="Buscar uma sequência de letras" spellcheck="false" autocapitalize="characters" autocorrect="off">
+      <button class="botao quadrado" id="busca-ant" type="button" aria-label="Acerto anterior (Shift+Enter)" title="Anterior (Shift+Enter)">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="botao quadrado acao" id="busca-prox" type="submit" aria-label="Próximo acerto (Enter)" title="Próximo (Enter)">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 5.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="botao" id="busca-parar" type="button" hidden>Parar</button>
+      <output class="busca-resultado" id="busca-resultado" aria-live="polite"></output>
+    </form>
+
+    <form class="ir" id="form-ir" autocomplete="off">
+      <input class="campo curto" id="ir" type="text" name="ir" placeholder="Ir para: 50 %, 100T…" aria-label="Ir para uma posição" spellcheck="false" title="Posição exata, porcentagem (50 %), sufixo (100T, 2,5G, 300k) ou 1e15. Ctrl+G">
+    </form>
+
+    <div class="ferramentas">
+      <div class="zoom" role="group" aria-label="Zoom da letra">
+        <button class="botao quadrado" id="fonte-menos" type="button" aria-label="Afastar (letra menor)" title="Afastar: letra menor, mais letras na tela. Também Ctrl + roda do mouse">A−</button>
+        <input class="campo zoom-campo" id="zoom" type="text" inputmode="decimal" value="100" aria-label="Zoom em porcentagem (100 = letra de 16 px)" title="Zoom em %. Digite um valor e aperte Enter. Ctrl+0 volta para 100" spellcheck="false">
+        <span class="zoom-pct" aria-hidden="true">%</span>
+        <button class="botao quadrado" id="fonte-mais" type="button" aria-label="Aproximar (letra maior)" title="Aproximar: letra maior">A+</button>
+      </div>
+      <button class="botao" id="agrupar" type="button" aria-pressed="false" title="Separa as letras de 10 em 10, só na tela">Grupos de 10</button>
+      <button class="botao" id="sortear" type="button" title="Vai para um lugar qualquer do texto">Sortear</button>
+      <button class="botao" id="copiar" type="button" title="Copia as letras que estão na tela">Copiar tela</button>
+    </div>
+  </header>
+
+  <main class="leitura" id="leitura">
+    <div class="texto" id="texto" tabindex="0" role="document" aria-label="Trecho do texto de 1 quintilhão de letras. Setas, Page Up e Page Down andam, Home e End vão ao começo e ao fim.">
+      <pre id="pre"></pre>
+    </div>
+    <div class="regua" id="regua" role="slider" aria-label="Posição no texto" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <canvas id="regua-tela"></canvas>
+      <div class="regua-dica" id="regua-dica" hidden></div>
+    </div>
+  </main>
+
+  <footer class="barra barra-rodape" id="rodape">
+    <span class="rodape-pos" id="pos">Posição 0</span>
+    <span class="rodape-meio" id="meio"></span>
+    <span class="rodape-dica">Roda do mouse rola · Shift acelera · Alt voa · arraste a régua · Ctrl+F busca · Ctrl+G ir para</span>
+  </footer>
+
+  <div class="aviso" id="aviso" role="status" aria-live="polite" hidden></div>
+  <span class="sonda" aria-hidden="true"><span id="sonda">0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</span></span>
+
+  <script type="module" src="js/leitor-main.js"></script>
+</body>
+</html>

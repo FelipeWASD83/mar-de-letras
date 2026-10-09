@@ -1,0 +1,216 @@
+/* Leitor em tela cheia. Usa as cores de css/tokens.css (as mesmas do site):
+   barra escura, leitura clara, barra escura. */
+
+:root {
+  --fs: 16px; /* o JS troca (botões A− e A+, contador) */
+  --lh: calc(var(--fs) * 1.5);
+  --largura-regua: 96px;
+  --altura-controle: 32px;
+  --barra-lateral: clamp(12px, 1.6vw, 28px);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --largura-regua: 64px;
+    --altura-controle: 44px; /* alvo de toque de 44 px no celular */
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+body { margin: 0; }
+h1, p, pre { margin: 0; }
+button, input { font: inherit; color: inherit; }
+
+.leitor-pagina {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  background: var(--tinta);
+  color: var(--claro);
+  font-family: var(--mono);
+  overflow: hidden;
+}
+
+.so-leitor {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* ---------- barras ---------- */
+.barra {
+  background: var(--tinta);
+  color: var(--claro);
+  padding: 10px var(--barra-lateral);
+}
+
+.barra-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.barra-rodape {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 20px;
+  border-top: 1px solid var(--tinta-linha);
+  font-size: 0.72rem; letter-spacing: 0.06em; color: var(--claro-2);
+}
+.rodape-pos { color: var(--claro); }
+
+.marca {
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em;
+  color: var(--claro); text-decoration: none; white-space: nowrap;
+}
+.marca span { color: var(--marca); }
+.marca:hover { color: var(--marca); }
+
+.busca, .ir, .ferramentas, .zoom { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ferramentas { margin-left: auto; }
+.zoom { flex-wrap: nowrap; gap: 6px; }
+
+.campo {
+  height: var(--altura-controle);
+  background: var(--tinta-2);
+  border: 1px solid var(--tinta-linha);
+  border-radius: 10px;
+  padding: 0 12px;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--claro);
+  text-transform: uppercase;
+  width: 190px;
+  min-width: 0;
+}
+.campo::placeholder { color: #5b7191; text-transform: none; }
+.campo.curto { width: 215px; text-transform: none; }
+.campo.zoom-campo { width: 58px; text-align: center; padding: 0 4px; text-transform: none; }
+.zoom-pct { color: var(--claro-2); font-size: 0.85rem; margin-left: -2px; }
+
+.botao {
+  height: var(--altura-controle);
+  background: transparent;
+  border: 1px solid var(--tinta-linha);
+  border-radius: 999px;
+  padding: 0 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--claro);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.12s, background-color 0.12s;
+}
+.botao:hover { border-color: var(--claro-2); background: var(--tinta-2); }
+.botao.quadrado { width: var(--altura-controle); padding: 0; display: inline-grid; place-items: center; border-radius: 10px; }
+.botao.acao { background: var(--marca); border-color: var(--marca); color: var(--tinta); }
+.botao.acao:hover { background: #ffe56e; border-color: #ffe56e; }
+.botao[aria-pressed="true"] { background: var(--marca); border-color: var(--marca); color: var(--tinta); }
+.botao[hidden] { display: none; }
+
+.campo:focus-visible, .botao:focus-visible, .marca:focus-visible { outline: 2px solid var(--marca); outline-offset: 2px; }
+
+.busca-resultado { font-size: 0.75rem; color: var(--claro-2); letter-spacing: 0.04em; max-width: 46ch; }
+
+/* ---------- leitura ---------- */
+.leitura {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--largura-regua);
+  min-height: 0;
+  background: var(--papel);
+  color: var(--escuro);
+}
+
+.texto {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 14px 20px;
+  outline: none;
+  touch-action: none; /* o arrasto do dedo rola o texto, não a página */
+}
+.texto:focus-visible { box-shadow: inset 0 0 0 2px var(--escuro); }
+
+.texto pre {
+  font-family: var(--mono);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  letter-spacing: 0.06em;
+  white-space: pre;
+  color: var(--escuro);
+}
+
+mark {
+  background: var(--marca);
+  color: var(--tinta);
+  border-radius: 0.12em;
+  box-shadow: 0 0 0 0.06em var(--marca);
+}
+mark.atual { outline: max(1px, 0.1em) solid var(--tinta); outline-offset: 0.04em; }
+
+.regua {
+  position: relative;
+  min-height: 0;
+  border-left: 1px solid var(--papel-linha);
+  background: var(--papel);
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+}
+.regua canvas { display: block; width: 100%; height: 100%; }
+.regua-dica {
+  position: absolute;
+  right: 100%;
+  margin-right: 10px;
+  transform: translateY(-50%);
+  background: var(--tinta);
+  color: var(--claro);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.regua-dica[hidden] { display: none; }
+
+/* ---------- aviso e sonda ---------- */
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: 56px;
+  transform: translateX(-50%);
+  max-width: min(92vw, 560px);
+  background: var(--tinta);
+  color: var(--claro);
+  border: 1px solid var(--tinta-linha);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  box-shadow: 0 6px 24px rgba(14, 26, 43, 0.3);
+  z-index: 5;
+}
+.aviso[hidden] { display: none; }
+
+.sonda { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; visibility: hidden; pointer-events: none; }
+.sonda span { display: inline-block; font-family: var(--mono); font-size: var(--fs); line-height: 1; letter-spacing: 0.06em; white-space: pre; }
+
+/* Celular: três linhas de barra (marca + ir para, busca, ferramentas rolando de
+   lado dentro da própria barra), para sobrar altura para o texto. */
+@media (max-width: 720px) {
+  .barra { padding: 8px 12px; }
+  .barra-topo { gap: 8px 10px; }
+  .marca { order: 1; }
+  .ir { order: 2; flex: 1 1 140px; }
+  .ir .campo { width: 100%; }
+  .busca { order: 3; flex: 1 1 100%; flex-wrap: wrap; }
+  .busca .campo { flex: 1 1 120px; width: auto; }
+  .busca-resultado { flex: 1 0 100%; }
+  .busca-resultado:empty { display: none; }
+  .ferramentas { order: 4; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; margin-left: 0; padding-bottom: 2px; scrollbar-width: thin; }
+  .ferramentas > * { flex: none; }
+  .barra-rodape .rodape-dica { display: none; }
+}
