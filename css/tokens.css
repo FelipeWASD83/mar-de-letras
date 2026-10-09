@@ -1,0 +1,25 @@
+:root {
+  /* faixas escuras: tinta azul-noite */
+  --tinta: #0e1a2b;
+  --tinta-2: #15263d;
+  --tinta-linha: #2a4363;
+  --claro: #eef2f8;
+  --claro-2: #a9b8cd;
+
+  /* faixas claras: papel creme */
+  --papel: #f4eedf;
+  --papel-2: #ebe3cf;
+  --papel-linha: #cfc4a8;
+  --escuro: #17202e;
+  --escuro-2: #566071;
+
+  /* a única cor de ação: marca-texto */
+  --marca: #ffd83d;
+
+  --serifa: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  --mono: "Cascadia Mono", "Cascadia Code", Consolas, "Liberation Mono", monospace;
+
+  --corpo: clamp(15px, 0.55vw + 10px, 26px);
+  --lateral: clamp(16px, 4vw, 96px);
+  --raio: 14px;
+}

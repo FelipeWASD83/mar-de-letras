@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#0e1a2b"/>
+  <g font-family="Consolas, monospace" font-size="9" font-weight="700" fill="#eef2f8" opacity=".6">
+    <text x="4" y="12">QZX</text>
+    <text x="4" y="27">MBK</text>
+  </g>
+  <rect x="3" y="14" width="26" height="8" rx="2" fill="#ffd83d"/>
+  <text x="5" y="21" font-family="Consolas, monospace" font-size="8.5" font-weight="700" fill="#0e1a2b">AMOR</text>
+</svg>

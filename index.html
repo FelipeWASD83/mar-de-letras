@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Mar de letras</title>
+  <meta name="description" content="Um texto de 1 quintilhão de letras aleatórias, calculado na hora (nada fica guardado), com busca para ver se uma sequência existe nele.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+<header class="faixa escura" id="topo">
+  <div class="hud">
+    <span class="rotulo">MAR DE LETRAS</span>
+    <span class="rotulo" id="hud-total">1.000.000.000.000.000.000 letras</span>
+  </div>
+
+  <div class="topo-grade">
+    <div class="topo-texto">
+      <h1 class="titulo">
+        <span>Um texto de 1 quintilhão de letras.</span>
+        <span class="apagado">Nenhuma está guardada.</span>
+      </h1>
+      <p class="lide">Cada letra é calculada na hora a partir da posição dela. Digite uma sequência e veja se ela existe aí dentro, quantas vezes e em que lugar.</p>
+
+      <form class="busca" id="form-busca" autocomplete="off">
+        <label class="rotulo" for="consulta">Sequência de letras</label>
+        <div class="busca-linha">
+          <input class="campo" id="consulta" name="consulta" type="text" maxlength="40" spellcheck="false" autocapitalize="characters" autocorrect="off" placeholder="FELIPE">
+          <button class="botao primario" id="buscar" type="submit">Buscar</button>
+          <button class="botao contorno" id="parar" type="button" hidden>Parar</button>
+        </div>
+        <div class="busca-extra">
+          <div class="exemplos" id="exemplos" aria-label="Exemplos">
+            <span class="rotulo">Exemplos</span>
+            <button class="chip" type="button">AMOR</button>
+            <button class="chip" type="button">BRASIL</button>
+            <button class="chip" type="button">FELIPE</button>
+            <button class="chip" type="button">ABACAXIS</button>
+            <button class="chip" type="button">ABCDEFGHIJ</button>
+          </div>
+          <div class="comeco">
+            <label class="rotulo" for="comeco">Começar na posição</label>
+            <input class="campo pequeno" id="comeco" type="text" inputmode="numeric" placeholder="0" spellcheck="false">
+          </div>
+        </div>
+      </form>
+      <p class="previa" id="previa" aria-live="polite"></p>
+    </div>
+
+    <dl class="medidas" id="medidas">
+      <div class="medida">
+        <dt class="rotulo">Varridas</dt>
+        <dd class="valor" id="m-varridas">0</dd>
+        <dd class="sub" id="m-varridas-sub">nenhuma busca ainda</dd>
+      </div>
+      <div class="medida">
+        <dt class="rotulo">Velocidade</dt>
+        <dd class="valor" id="m-velocidade">…</dd>
+        <dd class="sub" id="m-velocidade-sub">medindo o seu computador</dd>
+      </div>
+      <div class="medida destaque">
+        <dt class="rotulo">Acertos</dt>
+        <dd class="valor" id="m-acertos">0</dd>
+        <dd class="sub" id="m-acertos-sub">ocorrências da sequência</dd>
+      </div>
+      <div class="medida">
+        <dt class="rotulo">Tempo</dt>
+        <dd class="valor" id="m-tempo">0 s</dd>
+        <dd class="sub" id="m-tempo-sub">de busca</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="hud hud-baixo">
+    <span class="rotulo" id="hud-nucleos"></span>
+    <span class="rotulo">nada é guardado e nada sai do navegador</span>
+  </div>
+</header>
+
+<main class="faixa clara" id="leitura">
+  <div class="leitura-grade">
+    <section class="leitor" aria-label="Leitor do texto">
+      <div class="barra-leitor">
+        <p class="posicao" id="posicao"></p>
+        <div class="controles">
+          <button class="botao pequeno" id="anterior" type="button" aria-label="Página anterior">◀ Anterior</button>
+          <button class="botao pequeno" id="proxima" type="button" aria-label="Próxima página">Próxima ▶</button>
+          <form class="ir" id="form-ir" autocomplete="off">
+            <label class="rotulo-escuro" for="ir-pos">Ir para</label>
+            <input class="campo-claro" id="ir-pos" type="text" inputmode="numeric" placeholder="posição" spellcheck="false">
+            <button class="botao pequeno" type="submit">Ir</button>
+          </form>
+          <button class="botao pequeno" id="sortear" type="button">Sortear um lugar</button>
+        </div>
+      </div>
+      <p class="aviso-ir" id="aviso-ir" aria-live="polite"></p>
+
+      <div class="pagina" id="pagina" tabindex="0" aria-label="Trecho do texto. Page Up e Page Down mudam de página, as setas andam uma linha.">
+        <pre class="gutter" id="gutter" aria-hidden="true"></pre>
+        <pre class="texto" id="texto"></pre>
+      </div>
+      <span class="medidor" aria-hidden="true"><span id="medidor">ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL</span></span>
+    </section>
+
+    <aside class="acertos" aria-label="Onde a sequência apareceu">
+      <h2 class="sub-titulo">Onde apareceu</h2>
+      <p class="resumo" id="acertos-resumo" aria-live="polite">Faça uma busca e as posições aparecem aqui.</p>
+      <ol class="lista" id="lista"></ol>
+    </aside>
+  </div>
+</main>
+
+<section class="faixa escura" id="tabela-secao" aria-labelledby="tabela-titulo">
+  <div class="tabela-grade">
+    <div class="tabela-texto">
+      <h2 class="sub-titulo claro-titulo" id="tabela-titulo">O que dá para achar</h2>
+      <p class="lide">Num texto aleatório, quanto mais comprida a sequência, mais rara ela é: cada letra a mais torna o acerto 26 vezes mais raro. Os tempos usam a velocidade medida no seu computador.</p>
+      <p class="nota" id="tabela-nota"></p>
+    </div>
+    <div class="tabela-caixa">
+      <table class="tabela" id="tabela">
+        <thead>
+          <tr>
+            <th scope="col">Letras</th>
+            <th scope="col">Vezes no texto</th>
+            <th scope="col">Chance de existir</th>
+            <th scope="col">Tempo até a primeira</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-corpo"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="faixa clara rodape">
+  <div class="rodape-grade">
+    <section>
+      <h2 class="rotulo-escuro">Como o texto existe sem ocupar espaço</h2>
+      <p>O texto é dividido em 125 quadrilhões de blocos de 8 letras. Cada bloco sai de uma conta sobre o número dele, com uma semente fixa. Mesma posição, mesma letra, sempre, em qualquer computador. O site inteiro tem poucos KB.</p>
+    </section>
+    <section>
+      <h2 class="rotulo-escuro">Como a busca funciona</h2>
+      <p>O navegador corta o texto em pedaços de 8 milhões de letras e reparte entre vários núcleos do processador. Cada um gera o seu pedaço e procura a sequência. Não existe servidor e nada é enviado para fora.</p>
+    </section>
+    <section>
+      <h2 class="rotulo-escuro">O que "aleatório" quer dizer aqui</h2>
+      <p>As letras passam em testes de distribuição (cada letra e cada par de letras aparecem com a frequência esperada), mas vêm de uma fórmula fixa, não de um sorteio de verdade. A "chance de existir" é a estimativa de antes de procurar: o texto é um só, então a sequência existe ou não existe.</p>
+    </section>
+  </div>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

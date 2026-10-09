@@ -1,0 +1,9 @@
+{
+  "name": "mar-de-letras",
+  "private": true,
+  "type": "module",
+  "description": "Um texto de 1 quintilhão de letras aleatórias, gerado na hora (nada guardado), com busca.",
+  "scripts": {
+    "test": "node --test \"testes/*.test.js\""
+  }
+}
