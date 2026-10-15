@@ -7,8 +7,7 @@ const MAX_LISTA = 500;
 const FILA = 2; // pedaços já entregues a cada worker, para ele não esperar a thread principal
 
 export function quantosNucleos() {
-  const hc = navigator.hardwareConcurrency || 4;
-  return Math.max(1, Math.min(NUCLEOS_MAX, Math.floor(hc * 0.75)));
+  return NUCLEOS_MAX;
 }
 
 export class Buscador {
