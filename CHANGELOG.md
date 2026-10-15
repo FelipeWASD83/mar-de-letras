@@ -6,7 +6,7 @@ A versão mais nova fica em cima. Ela mora só aqui: o projeto não mostra núme
 
 **Mudou**
 
-- A busca agora usa sempre 16 núcleos (antes usava 75 % dos que o navegador informava, o que dava 10 no seu PC).
+- A busca agora usa todos os núcleos que o navegador informar, no mínimo 16 e no máximo 20 (antes usava 75 %, o que dava 10 ou menos no seu PC).
 
 ## 1.0.0 (14/10/2026)
 

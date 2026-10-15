@@ -40,8 +40,9 @@ fixa. Mesma posição, mesma letra, em qualquer máquina e a qualquer hora.
 - `js/buscador.js` reparte os pedaços, mantém 2 na fila de cada worker (para
   ele não esperar a thread principal) e junta: contagem, as 500 posições mais
   próximas do começo e a velocidade dos últimos 3 s.
-- Núcleos: sempre 16 (`NUCLEOS_MAX`, fixo por pedido dele em 15/10/2026; antes era 75 %
-  dos lógicos e dava 10 no navegador dele), na busca com contagem e na
+- Núcleos: todos os lógicos que o navegador informar, no mínimo 16 e no máximo 20
+  (`NUCLEOS_MIN`/`NUCLEOS_MAX`, pedido dele em 15/10/2026; antes era 75 % dos lógicos
+  e ele via 10, depois 6), na busca com contagem e na
   do leitor (cada página cria o seu próprio conjunto de workers).
 - **Velocidade:** ~3 bilhões de letras/s no PC dele com a aba visível (medido em
   09/10/2026); aba escondida cai para ~1 bilhão, porque o navegador estrangula.

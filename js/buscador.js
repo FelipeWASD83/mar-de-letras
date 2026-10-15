@@ -2,12 +2,14 @@
 import { TOTAL } from './gerador.js';
 import { PEDACO } from './busca.js';
 
-export const NUCLEOS_MAX = 16;
+export const NUCLEOS_MIN = 16;
+export const NUCLEOS_MAX = 20;
 const MAX_LISTA = 500;
 const FILA = 2; // pedaços já entregues a cada worker, para ele não esperar a thread principal
 
 export function quantosNucleos() {
-  return NUCLEOS_MAX;
+  const hc = navigator.hardwareConcurrency || NUCLEOS_MIN;
+  return Math.max(NUCLEOS_MIN, Math.min(NUCLEOS_MAX, hc));
 }
 
 export class Buscador {
