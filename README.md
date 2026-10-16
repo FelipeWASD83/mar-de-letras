@@ -37,3 +37,7 @@ URL, então dá para voltar ao mesmo lugar depois.
 ## Para quem for mexer
 
 Ver o `CLAUDE.md`. Testes: `node --test "testes/*.test.js"`. Porta 4343.
+
+## Licença
+
+Código sob a licença MIT (arquivo `LICENSE`).
